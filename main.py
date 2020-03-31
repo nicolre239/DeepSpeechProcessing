@@ -3,6 +3,7 @@ import glob
 import csv
 import time
 import sys
+import os
 
 #lastFileName = [-1]
 lastFileName = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -90,13 +91,13 @@ def cutFile (i, book):
         beginTimeArray = getTimings(beginTime)
         endTimeArray = getTimings(endTime)
 
-        filename = '0'
+        #filename = '0'
         try:
             filename = cut(mp4, beginTimeArray, endTimeArray)
         except OSError or BrokenPipeError:
-            logfile = open('logfile.txt', 'a')
-            logfile.write('\n#\n#ERROR:\n' + filename + '\n#\n')
-            logfile.close()
+            #logfile = open('logfile.txt', 'a')
+            #logfile.write('\n#\n#ERROR:\n' + filename + '\n#\n')
+            #logfile.close()
             continue
 
         if filename != '0':
@@ -131,9 +132,7 @@ def cut (mp4, beginTime, endTime):
     global totalDurationMs
     mp4_file = mp4[0]
 
-    print(mp4_file)
     clip = mp.VideoFileClip(mp4_file)
-    print('')
 
     beginMs = beginTime[3] + beginTime[2] * 1000 + beginTime[1] * 60 * 1000 + beginTime[0] * 3600 * 1000
     endMs = endTime[3] + endTime[2] * 1000 + endTime[1] * 60 * 1000 + endTime[0] * 3600 * 1000
@@ -162,12 +161,15 @@ def cut (mp4, beginTime, endTime):
         subclip = clip.subclip(beginTimeString, endTimeString)
 
         filename = getName()
-        subclip.audio.write_audiofile('./cutted/clips/' + filename + '.mp3',  verbose=False, logger=None)
-        clip = mp.AudioFileClip('./cutted/clips/' + filename + '.mp3')
+        #print(r"./cutted/clips/" + filename + ".mp3")
+        subclip.audio.write_audiofile(r"./cutted/clips/" + filename + ".mp3",  verbose=False, logger=None)
+        #print('afterwrite')
+        #clip = mp.AudioFileClip('./cutted/clips/' + filename + '.mp3')
         #print(clip.duration)
         #print(subclip.duration)
+        #print ('beforeclose')
         clip.close()
-
+        #print ('afterclose')
         return filename
     else:
         #print('\nClip is too short\n')
@@ -183,6 +185,12 @@ def main():
             print("WRONG COMMAND LINE ARGUMENT")
             return 0
         else:
+            try:
+                os.mkdir('./cutted')
+                os.mkdir('./cutted/clips/')
+            except FileExistsError:
+                print('Directory already exsists')
+			 
             lastFileName[0] = int(sys.argv[1])
             lastFileName[1] = int(sys.argv[2])
             start_time = time.time()
