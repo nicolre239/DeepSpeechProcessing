@@ -131,6 +131,7 @@ def cut (mp4, beginTime, endTime):
     global totalDurationMs
     mp4_file = mp4[0]
 
+    print(mp4_file)
     clip = mp.VideoFileClip(mp4_file)
 
     beginMs = beginTime[3] + beginTime[2] * 1000 + beginTime[1] * 60 * 1000 + beginTime[0] * 3600 * 1000
