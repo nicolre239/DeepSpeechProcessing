@@ -90,6 +90,7 @@ def cutFile (i, book):
         beginTimeArray = getTimings(beginTime)
         endTimeArray = getTimings(endTime)
 
+        filename = '0'
         try:
             filename = cut(mp4, beginTimeArray, endTimeArray)
         except OSError or BrokenPipeError:
