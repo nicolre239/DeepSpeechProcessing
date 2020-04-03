@@ -115,6 +115,7 @@ def cutFile (i, book):
 
             globalCounter = (globalCounter + 1) % 5
         else:
+            '''
             logfile = open('logfile.txt', 'a')
 
             logfile.write("\n\nCut declined cause of timing\n")
@@ -123,6 +124,7 @@ def cutFile (i, book):
             logfile.write(endTime + '\n')
 
             logfile.close()
+            '''
             continue
 
 
@@ -233,7 +235,7 @@ def main():
                     cutFile(i, book)
 
                     logfile = open('logfile.txt', 'a')
-                    logfile.write('Total cuts time: %d:%d:%d' % (totalDurationMs // 3600000, totalDurationMs % 3600000 // 60000, totalDurationMs % 3600000 % 60000 // 1000))
+                    logfile.write('\nTotal cuts time: %d:%d:%d \n' % (totalDurationMs // 3600000, totalDurationMs % 3600000 // 60000, totalDurationMs % 3600000 % 60000 // 1000))
                     logfile.close()
                     #print("--- %s seconds ---" % (time.time() - start_time))
     except IndexError:
